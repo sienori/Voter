@@ -1,45 +1,96 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createNote = /* GraphQL */ `
-  mutation CreateNote(
-    $input: CreateNoteInput!
-    $condition: ModelNoteConditionInput
+export const postQuestion = /* GraphQL */ `
+  mutation PostQuestion(
+    $title: String!
+    $description: String
+    $options: [String!]!
   ) {
-    createNote(input: $input, condition: $condition) {
+    postQuestion(title: $title, description: $description, options: $options) {
       id
-      name
+      title
       description
-      createdAt
+      options {
+        index
+        title
+        votes
+      }
       updatedAt
+      createdAt
     }
   }
 `;
-export const updateNote = /* GraphQL */ `
-  mutation UpdateNote(
-    $input: UpdateNoteInput!
-    $condition: ModelNoteConditionInput
-  ) {
-    updateNote(input: $input, condition: $condition) {
+export const vote = /* GraphQL */ `
+  mutation Vote($id: String!, $index: Int!) {
+    vote(id: $id, index: $index) {
       id
-      name
+      title
       description
-      createdAt
+      options {
+        index
+        title
+        votes
+      }
       updatedAt
+      createdAt
     }
   }
 `;
-export const deleteNote = /* GraphQL */ `
-  mutation DeleteNote(
-    $input: DeleteNoteInput!
-    $condition: ModelNoteConditionInput
+export const createQuestion = /* GraphQL */ `
+  mutation CreateQuestion(
+    $input: CreateQuestionInput!
+    $condition: ModelQuestionConditionInput
   ) {
-    deleteNote(input: $input, condition: $condition) {
+    createQuestion(input: $input, condition: $condition) {
       id
-      name
+      title
       description
-      createdAt
+      options {
+        index
+        title
+        votes
+      }
       updatedAt
+      createdAt
+    }
+  }
+`;
+export const updateQuestion = /* GraphQL */ `
+  mutation UpdateQuestion(
+    $input: UpdateQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    updateQuestion(input: $input, condition: $condition) {
+      id
+      title
+      description
+      options {
+        index
+        title
+        votes
+      }
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const deleteQuestion = /* GraphQL */ `
+  mutation DeleteQuestion(
+    $input: DeleteQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    deleteQuestion(input: $input, condition: $condition) {
+      id
+      title
+      description
+      options {
+        index
+        title
+        votes
+      }
+      updatedAt
+      createdAt
     }
   }
 `;
