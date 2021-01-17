@@ -4,6 +4,7 @@
 Amplify Params - DO NOT EDIT */
 
 const AWSAppSyncClient = require("aws-appsync").default;
+const AppSyncConfig = require("./aws-exports");
 const gql = require("graphql-tag");
 global.fetch = require("node-fetch");
 
@@ -26,31 +27,36 @@ const createQuestion = gql(`
   }
 `);
 
-const localEnv = {
-    API_BOYAKIGQL_GRAPHQLAPIENDPOINTOUTPUT: "http://192.168.139.2:20002/graphql",
-    REGION: "ap-northeast-1",
+const localConfig = {
+    url: "http://192.168.139.2:20002/graphql",
+    region: "ap-northeast-1",
+    auth: {
+        type: "API_KEY",
+        apiKey: "da2-fakeApiId123456",
+    },
+    disableOffline: true,
 };
 
-exports.handler = async (event, context, callback) => {
-    const isCloudEnv =
-        "AWS_EXECUTION_ENV" in process.env && process.env.AWS_EXECUTION_ENV.startsWith("AWS_Lambda_");
-    const env = isCloudEnv ? process.env : localEnv;
-    const auth = {
-        type: "API_KEY",
-        apiKey: isCloudEnv ? process.env.APIKEY : "da2-fakeApiId123456",
-    };
+const cloudConfig = {
+    url: AppSyncConfig.aws_appsync_graphqlEndpoint,
+    region: AppSyncConfig.aws_appsync_region,
+    auth: {
+        type: AppSyncConfig.aws_appsync_authenticationType,
+        apiKey: AppSyncConfig.aws_appsync_apiKey,
+    },
+    disableOffline: true,
+};
 
-    const client = new AWSAppSyncClient({
-        url: env.API_BOYAKIGQL_GRAPHQLAPIENDPOINTOUTPUT,
-        region: env.REGION,
-        auth: auth,
-        disableOffline: true,
-    });
+const isCloud =
+    "AWS_EXECUTION_ENV" in process.env && process.env.AWS_EXECUTION_ENV.startsWith("AWS_Lambda_");
+
+exports.handler = async (event, context, callback) => {
+    const client = new AWSAppSyncClient(isCloud ? cloudConfig : localConfig);
 
     const title = event.arguments.title || "";
     const description = event.arguments.description || "";
     const options = event.arguments.options
-        .filter(title => title !== "")
+        .filter((title) => title !== "")
         .map((title, index) => ({
             title: title,
             index: index,
