@@ -19,14 +19,17 @@ const Vote = () => {
   const [votedIndex, setVotedIndex] = useState(null);
   const [existsQuestion, setExistsQuestion] = useState(true);
 
-  useEffect(async () => {
-    const result = await API.graphql({ query: getQuestion, variables: { id: id } });
-    if (result.data.getQuestion) setQuestion(result.data.getQuestion);
-    else setExistsQuestion(false);
+  useEffect(() => {
+    const init = async () => {
+      const result = await API.graphql({ query: getQuestion, variables: { id: id } });
+      if (result.data.getQuestion) setQuestion(result.data.getQuestion);
+      else setExistsQuestion(false);
 
-    const currentVotedIndex = Cookies.get(id);
-    if (typeof currentVotedIndex !== "undefined") setVotedIndex(currentVotedIndex);
-  }, []);
+      const currentVotedIndex = Cookies.get(id);
+      if (typeof currentVotedIndex !== "undefined") setVotedIndex(currentVotedIndex);
+    };
+    init();
+  }, [id]);
 
   const sendVote = async (index) => {
     if (votedIndex !== null) return;
