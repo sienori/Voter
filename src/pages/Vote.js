@@ -35,7 +35,7 @@ const Vote = () => {
     setQuestion(votedQuestion);
     setVotedIndex(index);
 
-    Cookies.set(id, index, { expires: 365 });
+    Cookies.set(id, index, { expires: 365, secure: true });
     try {
       const result = await API.graphql({ query: vote, variables: { id: question.id, index: index } });
       if (result.data.vote) setQuestion(result.data.vote);
