@@ -2,14 +2,31 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { API } from 'aws-amplify';
 import { postQuestion } from '../graphql/mutations';
+import { styled } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Button from '@material-ui/core/Button';
 
+const MainCard = styled(Card)({
+  padding: 10
+});
 
 const initialFormState = { title: '', description: '' };
+const optionPlaceholders = ["犬", "猫"];
+
 const Post = () => {
   const [formData, setFormData] = useState(initialFormState);
-  const [options, setOptions] = useState([""]);
+  const [options, setOptions] = useState(["", ""]);
   const [isPosting, setIsPosting] = useState(false);
+  const [shouldShowError, setShouldShowError] = useState(false);
   const history = useHistory();
+  document.title = "Voter | アンケートを作成";
 
   const addOption = () => {
     const newOptions = [...options, ""];
@@ -34,43 +51,82 @@ const Post = () => {
     } catch (e) {
       console.log(e.errors);
       setIsPosting(false);
+      setShouldShowError(true);
     }
   };
 
   return (
-    <div className="Post">
-      <h1>Post</h1>
-      <h2>Title</h2>
-      <input
-        onChange={e => setFormData({ ...formData, 'title': e.target.value })}
-        placeholder="Question title"
-        value={formData.title}
-      />
-      <h2>Description</h2>
-      <input
-        onChange={e => setFormData({ ...formData, 'description': e.target.value })}
-        placeholder="Question description"
-        value={formData.description}
-      />
-      <h2>Options</h2>
-      {options.map((option, index) => (
-        <input
-          onChange={e => {
-            let newOptions = [...options];
-            newOptions[index] = e.target.value;
-            setOptions(newOptions);
-          }}
-          placeholder="option"
-          value={option}
-          key={index}
-        />
-      ))}
+    <MainCard>
+      <CardContent>
+        <Box mb={4}>
+          <Typography variant="h4">アンケートを作成</Typography>
+        </Box>
+        <Box mb={2}>
+          <Typography variant="subtitle2">タイトル</Typography>
+          <TextField
+            onChange={e => setFormData({ ...formData, 'title': e.target.value })}
+            value={formData.title}
+            error={shouldShowError && !formData.title}
+            helperText={shouldShowError && !formData.title && "タイトルが必要です"}
+            fullWidth
+            placeholder="好きな動物は？"
+          />
+        </Box>
 
-      <button onClick={addOption}>Add option</button>
+        <Box mb={2}>
+          <Typography variant="subtitle2">説明文</Typography>
+          <TextField
+            onChange={e => setFormData({ ...formData, 'description': e.target.value })}
+            value={formData.description}
+            fullWidth
+          />
+        </Box>
 
-      <br />
-      <button onClick={createQuestion}>Create questionnaire</button>
-    </div>
+        <Typography variant="subtitle2">選択肢</Typography>
+        <List>
+          {options.map((option, index) => (
+            <ListItem key={index}>
+              <ListItemIcon>{index + 1}</ListItemIcon>
+              <TextField
+                onChange={e => {
+                  let newOptions = [...options];
+                  newOptions[index] = e.target.value;
+                  setOptions(newOptions);
+                }}
+                error={shouldShowError && !options[index] && options.filter(o => o).length < 2}
+                helperText={shouldShowError && !options[index] && options.filter(o => o).length < 2 && "選択肢が必要です"}
+                value={option}
+                placeholder={optionPlaceholders[index] || `選択肢 ${index + 1}`}
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </ListItem>
+          ))}
+          <ListItem>
+            <ListItemIcon>{options.length + 1}</ListItemIcon>
+            <Button
+              onClick={addOption}
+            >
+              選択肢を追加
+                </Button>
+          </ListItem>
+        </List>
+
+        <Box display="flex" justifyContent="flex-end">
+          <Button
+            onClick={createQuestion}
+            disabled={isPosting}
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            アンケートを作成
+              </Button>
+        </Box>
+      </CardContent>
+    </MainCard>
   );
 };;
 
