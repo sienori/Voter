@@ -47,7 +47,8 @@ const VoteResult = (props) => {
   useEffect(() => {
     const total = question.options
       .reduce((acc, cur) => ({ votes: acc.votes + cur.votes }));
-    setTotalVotes(total.votes);
+
+    setTimeout(() => setTotalVotes(total.votes), 100);
   }, [question]);
 
   return (
