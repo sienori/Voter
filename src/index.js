@@ -43,30 +43,28 @@ const headerButtonStyle =
 };
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Router>
-      <ThemeProvider theme={theme}>
-        <AppBar position="relative" color="primary">
-          <Toolbar>
-            <Button
-              component={Link}
-              to="/"
-              style={headerButtonStyle}>
-              <Box mr={1} clone><HowToVote /></Box>
-              <Typography variant="h5">Voter</Typography>
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <Main>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/post" component={Post} />
-            <Route exact path="/vote/:id" component={Vote} />
-            <Redirect to="/" />
-          </Switch>
-        </Main>
-      </ThemeProvider>
-    </Router>
-  </React.StrictMode>,
+  <Router>
+    <ThemeProvider theme={theme}>
+      <AppBar position="relative" color="primary">
+        <Toolbar>
+          <Button
+            component={Link}
+            to="/"
+            style={headerButtonStyle}>
+            <Box mr={1} clone><HowToVote /></Box>
+            <Typography variant="h5">Voter</Typography>
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Main>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/post" component={Post} />
+          <Route exact path="/vote/:id" component={Vote} />
+          <Redirect to="/" />
+        </Switch>
+      </Main>
+    </ThemeProvider>
+  </Router>,
   document.getElementById('root')
 );

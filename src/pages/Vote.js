@@ -16,6 +16,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import HowToVote from '@material-ui/icons/HowToVote';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import ReplayIcon from '@material-ui/icons/Replay';
+import Tooltip from '@material-ui/core/Tooltip';
 import VoteResult from './VoteResult';
 
 
@@ -67,6 +70,11 @@ const Vote = () => {
     }
   };
 
+  const handleReload = async () => {
+    const result = await API.graphql({ query: getQuestion, variables: { id: id } });
+    if (result.data.getQuestion) setQuestion(result.data.getQuestion);
+  };
+
   if (!existsQuestion) return (
     <Card>
       <CardContent>
@@ -112,7 +120,16 @@ const Vote = () => {
                 >投票する</Button>
               </Box>)}
           </Box>
-          : <VoteResult question={question} votedIndex={parseInt(votedIndex)} />
+          : <Box>
+            <VoteResult question={question} votedIndex={parseInt(votedIndex)} />
+            <Box display="flex" justifyContent="flex-end">
+              <Tooltip title="更新" arrow>
+                <IconButton onClick={handleReload} size="small">
+                  <ReplayIcon fontSize="inherit" />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
         }
       </CardContent>
     </MainCard>
