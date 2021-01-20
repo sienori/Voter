@@ -136,7 +136,9 @@ const Vote = () => {
                 <RadioGroup
                   value={selectedValue}
                   onChange={e => { setSelectedValue(e.target.value); }}>
-                  {question.options.items.map(option => (
+                  {question.options.items
+                    .sort((a, b) => a.index - b.index)
+                    .map(option => (
                     <FormControlLabel
                       value={option.index.toString()}
                       control={<Radio color="primary" />}
