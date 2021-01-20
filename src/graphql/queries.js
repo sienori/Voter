@@ -8,12 +8,19 @@ export const getQuestion = /* GraphQL */ `
       title
       description
       options {
-        index
-        title
-        votes
+        items {
+          id
+          questionId
+          index
+          title
+          votes
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
-      updatedAt
       createdAt
+      updatedAt
     }
   }
 `;
@@ -29,12 +36,60 @@ export const listQuestions = /* GraphQL */ `
         title
         description
         options {
-          index
-          title
-          votes
+          nextToken
         }
-        updatedAt
         createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getOption = /* GraphQL */ `
+  query GetOption($id: ID!) {
+    getOption(id: $id) {
+      id
+      questionId
+      question {
+        id
+        title
+        description
+        options {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      index
+      title
+      votes
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listOptions = /* GraphQL */ `
+  query ListOptions(
+    $filter: ModelOptionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOptions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        questionId
+        question {
+          id
+          title
+          description
+          createdAt
+          updatedAt
+        }
+        index
+        title
+        votes
+        createdAt
+        updatedAt
       }
       nextToken
     }

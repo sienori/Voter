@@ -69,7 +69,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-amplifycf181ecdcde14-staging-122853-deployment",
-          "S3Key": "amplify-builds/vote-775763645a44586b6156-build.zip"
+          "S3Key": "amplify-builds/vote-67356454336563493155-build.zip"
         }
       }
     },

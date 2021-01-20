@@ -14,15 +14,16 @@ const createQuestion = gql(`
   ) {
     createQuestion(input: $input) {
       id
-      title
-      description
-      options{
-          index
-          title
-          votes
-      }
-      createdAt
-      updatedAt
+    }
+  }
+`);
+
+const createOption = gql(`
+  mutation createOption(
+    $input: CreateOptionInput!
+  ) {
+    createOption(input: $input) {
+      id
     }
   }
 `);
@@ -51,29 +52,39 @@ const isCloud =
     "AWS_EXECUTION_ENV" in process.env && process.env.AWS_EXECUTION_ENV.startsWith("AWS_Lambda_");
 
 exports.handler = async (event, context, callback) => {
+    if (event.arguments.title === "") callback("No title", null);
+    if (event.arguments.options.filter(title => title !== "").length < 2)
+        callback("Not enough options", null);
+
     const client = new AWSAppSyncClient(isCloud ? cloudConfig : localConfig);
 
-    const title = event.arguments.title || "";
-    const description = event.arguments.description || "";
-    const options = event.arguments.options
+    const questionInput = {
+        title: event.arguments.title || "",
+        description: event.arguments.description || "",
+    };
+
+    const questionResult = await client.mutate({
+        mutation: createQuestion,
+        variables: { input: questionInput },
+    });
+    const questionId = questionResult.data.createQuestion.id;
+
+    const optionInputs = event.arguments.options
         .filter((title) => title !== "")
         .map((title, index) => ({
+            questionId: questionId,
             title: title,
             index: index,
             votes: 0,
         }));
 
-    if (title === "") callback("No title", null);
-    if (options.length < 2) callback("Not enough options", null);
+    const optionResults = optionInputs.map(input =>
+        client.mutate({
+            mutation: createOption,
+            variables: { input: input }
+        }));
 
-    const input = {
-        title: title,
-        description: description,
-        options: options,
-    };
-    const result = await client.mutate({
-        mutation: createQuestion,
-        variables: { input: input },
-    });
-    return result.data.createQuestion;
+    await Promise.all(optionResults);
+
+    return questionResult.data.createQuestion.id;
 };

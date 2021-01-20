@@ -2,18 +2,20 @@ type Question @model {
   id: ID!
   title: String!
   description: String
-  options: [Option!]!
-  updatedAt: AWSDateTime
+  options: [Option] @connection(keyName: "byQuestion", fields: ["id"])
 }
 
-type Option {
+type Option @model @key(name: "byQuestion", fields: ["questionId"]) {
+  id: ID!
+  questionId: ID!
+  question: Question @connection(fields: ["questionId"])
   index: Int!
   title: String!
-  votes: Int
+  votes: Int!
 }
 
 type Mutation {
-  postQuestion(title: String!, description: String, options: [String!]!): Question
+  postQuestion(title: String!, description: String, options: [String!]!): ID
     @function(name: "postQuestion-${env}")
-  vote(id: String!, index: Int!): Question @function(name: "vote-${env}")
+  vote(optionId: ID!): Question @function(name: "vote-${env}")
 }

@@ -8,36 +8,42 @@ const AppSyncConfig = require('./aws-exports');
 const gql = require("graphql-tag");
 global.fetch = require("node-fetch");
 
-const getQuestion = gql`
-  query getQuestion($id: ID!) {
-    getQuestion(id: $id) {
+const AWS = require('aws-sdk');
+const docClient = new AWS.DynamoDB.DocumentClient();
+
+const getOption = gql`
+  query getOption($id: ID!) {
+    getOption(id: $id) {
       id
+      index
       title
-      description
-      options {
-        index
-        title
-        votes
-      }
+      votes
+      questionId
     }
   }
 `;
 
-const updateQuestion = gql(`
-  mutation updateQuestion(
-    $input: UpdateQuestionInput!
+const updateOption = gql(`
+  mutation updateOption(
+    $input: UpdateOptionInput!
   ) {
-    updateQuestion(input: $input) {
-      id
-      title
-      description
-      options{
-          index
-          title
-          votes
+    updateOption(input: $input) {
+      question {
+        createdAt
+        description
+        id
+        title
+        updatedAt
+        options {
+          items {
+            index
+            id
+            title
+            updatedAt
+            votes
+          }
+        }
       }
-      createdAt
-      updatedAt
     }
   }
 `);
@@ -66,29 +72,25 @@ const isCloud =
   "AWS_EXECUTION_ENV" in process.env && process.env.AWS_EXECUTION_ENV.startsWith("AWS_Lambda_");
 
 exports.handler = async (event, context, callback) => {
+  const { optionId } = event.arguments;
   const client = new AWSAppSyncClient(isCloud ? cloudConfig : localConfig);
 
-  const getResult = await client.query({
-    query: getQuestion,
-    variables: { id: event.arguments.id },
+  const optionResult = await client.query({
+    query: getOption,
+    variables: { id: optionId },
     fetchPolich: "network-only",
   });
-  const question = getResult.data.getQuestion;
-  if (question === null) callback("Question does not exist", null);
 
-  question.updatedAt = new Date().toISOString();
-  delete question.__typename;
-  for (const i in question.options) {
-    delete question.options[i].__typename;
-    if (question.options[i].index === event.arguments.index) {
-      question.options[i].votes += 1;
-    }
-  }
+  const option = optionResult.data.getOption;
+  if (option === null) callback("Option does not exist", null);
+
+  delete option.__typename;
+  option.votes += 1;
 
   const updateResult = await client.mutate({
-    mutation: updateQuestion,
-    variables: { input: question },
+    mutation: updateOption,
+    variables: { input: option },
   });
 
-  return updateResult.data.updateQuestion;
+  return updateResult.data.updateOption.question;
 };
