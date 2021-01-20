@@ -66,7 +66,7 @@ exports.handler = async (event, context, callback) => {
     const questionResult = await client.mutate({
         mutation: createQuestion,
         variables: { input: questionInput },
-    });
+    }).catch(e => console.log(e));
     const questionId = questionResult.data.createQuestion.id;
 
     const optionInputs = event.arguments.options

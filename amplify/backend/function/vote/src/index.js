@@ -79,7 +79,7 @@ exports.handler = async (event, context, callback) => {
     query: getOption,
     variables: { id: optionId },
     fetchPolich: "network-only",
-  });
+  }).catch(e => console.log(e));
 
   const option = optionResult.data.getOption;
   if (option === null) callback("Option does not exist", null);
@@ -90,7 +90,7 @@ exports.handler = async (event, context, callback) => {
   const updateResult = await client.mutate({
     mutation: updateOption,
     variables: { input: option },
-  });
+  }).catch(e => console.log(e));
 
   return updateResult.data.updateOption.question;
 };
