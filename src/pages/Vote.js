@@ -94,7 +94,7 @@ const Vote = () => {
   if (!existsQuestion) return (
     <Card>
       <CardContent>
-        <Typography variant="h6">質問が見つかりませんでした。</Typography>
+        <Typography variant="h6">投票が見つかりませんでした。</Typography>
         <Typography variant="body2">URLが間違っている可能性があります。</Typography>
         <Box display="flex" justifyContent="flex-end">
           <Button component={Link} to="/" variant="contained" color="primary">ホームに戻る</Button>
@@ -109,7 +109,7 @@ const Vote = () => {
         <Box mb={2}>
           <MainCard>
             <CardContent>
-              <Typography variant="h6">アンケートが作成されました！</Typography>
+              <Typography variant="h6">投票が作成されました！</Typography>
               <Typography variant="body2">URLをお友達にシェアしましょう。</Typography>
               <Box m={3} textAlign="center">
                 <QRCode value={window.location.href} />

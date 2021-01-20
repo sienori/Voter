@@ -59,7 +59,7 @@ const Post = () => {
     <MainCard>
       <CardContent>
         <Box mb={4}>
-          <Typography variant="h4">アンケートを作成</Typography>
+          <Typography variant="h4">投票を作成</Typography>
         </Box>
         <Box mb={2}>
           <Typography variant="subtitle2">タイトル</Typography>
@@ -122,7 +122,7 @@ const Post = () => {
             color="primary"
             size="large"
           >
-            アンケートを作成
+            投票を作成
               </Button>
         </Box>
       </CardContent>

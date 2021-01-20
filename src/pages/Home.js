@@ -15,7 +15,7 @@ const Home = () => {
       </Typography>
       <Box mt={1}>
         <Typography variant="subtitle1">
-          Voterはログイン不要ですぐに使えるアンケート作成ツールです。
+          Voterはログイン不要ですぐに使える投票ツールです。
       </Typography>
       </Box>
 
@@ -30,7 +30,7 @@ const Home = () => {
           startIcon={<AddIcon />}
           mt="50px"
         >
-          アンケートを作成
+          投票を作成
         </Button>
 
       </Box>
