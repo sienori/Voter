@@ -34,7 +34,7 @@ const initialQuestion = {
   id: "",
   title: "",
   description: "",
-  options: []
+  options: { items: [] }
 };
 
 const Vote = () => {
@@ -60,14 +60,21 @@ const Vote = () => {
   }, [id]);
 
   const sendVote = async (index) => {
+    index = parseInt(index);
     if (votedIndex !== null) return;
     let votedQuestion = question;
-    votedQuestion.options[index].votes += 1;
+    const optionIndex = votedQuestion.options.items.findIndex(option => option.index === index);
+    votedQuestion.options.items[optionIndex].votes += 1;
     setQuestion(votedQuestion);
     setVotedIndexToCookie(index);
 
     try {
-      const result = await API.graphql({ query: vote, variables: { id: question.id, index: index } });
+      const result = await API.graphql({
+        query: vote,
+        variables: {
+          optionId: question.options.items[optionIndex].id
+        }
+      });
       if (result.data.vote) setQuestion(result.data.vote);
     } catch (e) {
       console.log(e);
@@ -129,7 +136,7 @@ const Vote = () => {
                 <RadioGroup
                   value={selectedValue}
                   onChange={e => { setSelectedValue(e.target.value); }}>
-                  {question.options.map(option => (
+                  {question.options.items.map(option => (
                     <FormControlLabel
                       value={option.index.toString()}
                       control={<Radio color="primary" />}
@@ -138,7 +145,7 @@ const Vote = () => {
                   ))}
                 </RadioGroup>
               </FormControl>
-              {question.options.length > 0 && (
+              {question.options.items.length > 0 && (
                 <Box display="flex" justifyContent="flex-end">
                   <Box textAlign="center">
                     {isCreated &&
@@ -159,7 +166,7 @@ const Vote = () => {
                 </Box>)}
             </Box>
             : <Box>
-              <VoteResult question={question} votedIndex={parseInt(votedIndex)} />
+              <VoteResult question={question} votedIndex={votedIndex} />
               <Box display="flex" justifyContent="flex-end">
                 <Tooltip title="更新" arrow>
                   <IconButton onClick={handleReload} size="small">

@@ -45,7 +45,7 @@ const Post = () => {
 
     try {
       const result = await API.graphql({ query: postQuestion, variables: input });
-      const id = result.data.postQuestion.id;
+      const id = result.data.postQuestion;
       setIsPosting(false);
       history.push({ pathname: `/vote/${id}`, state: { isCreated: true } });
     } catch (e) {

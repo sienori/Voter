@@ -45,7 +45,7 @@ const VoteResult = (props) => {
   const [totalVotes, setTotalVotes] = useState(0);
 
   useEffect(() => {
-    const total = question.options
+    const total = question.options.items
       .reduce((acc, cur) => ({ votes: acc.votes + cur.votes }));
 
     setTimeout(() => setTotalVotes(total.votes), 100);
@@ -53,7 +53,7 @@ const VoteResult = (props) => {
 
   return (
     <List>
-      {question.options.map((option) => (
+      {question.options.items.map((option) => (
         <ListItemNoPadding key={option.index}>
           <Chart width={`${totalVotes > 0 ? option.votes / totalVotes * 100 : 0}%`} />
           <ChartContent>
