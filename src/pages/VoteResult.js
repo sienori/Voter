@@ -53,18 +53,20 @@ const VoteResult = (props) => {
 
   return (
     <List>
-      {question.options.items.map((option) => (
-        <ListItemNoPadding key={option.index}>
-          <Chart width={`${totalVotes > 0 ? option.votes / totalVotes * 100 : 0}%`} />
-          <ChartContent>
-            <Typography variant="subtitle1">{option.title}</Typography>
-            <Votes>
-              {votedIndex === option.index && <CheckCircleOutlineIcon fontSize="small" />}
-              <Typography variant="subtitle1">{`${option.votes}票`}</Typography>
-            </Votes>
-          </ChartContent>
-        </ListItemNoPadding >
-      ))}
+      {question.options.items
+        .sort((a, b) => a.index - b.index)
+        .map((option) => (
+          <ListItemNoPadding key={option.index}>
+            <Chart width={`${totalVotes > 0 ? option.votes / totalVotes * 100 : 0}%`} />
+            <ChartContent>
+              <Typography variant="subtitle1">{option.title}</Typography>
+              <Votes>
+                {votedIndex === option.index && <CheckCircleOutlineIcon fontSize="small" />}
+                <Typography variant="subtitle1">{`${option.votes}票`}</Typography>
+              </Votes>
+            </ChartContent>
+          </ListItemNoPadding >
+        ))}
     </List >
   );
 };;

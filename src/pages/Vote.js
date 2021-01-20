@@ -139,12 +139,12 @@ const Vote = () => {
                   {question.options.items
                     .sort((a, b) => a.index - b.index)
                     .map(option => (
-                    <FormControlLabel
-                      value={option.index.toString()}
-                      control={<Radio color="primary" />}
-                      label={option.title}
-                      key={option.index} />
-                  ))}
+                      <FormControlLabel
+                        value={option.index.toString()}
+                        control={<Radio color="primary" />}
+                        label={option.title}
+                        key={option.index} />
+                    ))}
                 </RadioGroup>
               </FormControl>
               {question.options.items.length > 0 && (
