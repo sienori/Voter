@@ -29,5 +29,18 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
+  },
+  "auth": {
+    "cognitoc07f65ee": {
+      "service": "Cognito",
+      "serviceType": "managed",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "analytics": {
+    "voter": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

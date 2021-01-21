@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import { API } from 'aws-amplify';
+import { API, Analytics } from 'aws-amplify';
 import { postQuestion } from '../graphql/mutations';
 import { styled } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -48,6 +48,7 @@ const Post = () => {
       const result = await API.graphql({ query: postQuestion, variables: input });
       const id = result.data.postQuestion;
       setIsPosting(false);
+      Analytics.record({ name: "post_question" });
       history.push({ pathname: `/vote/${slugid.encode(id)}`, state: { isCreated: true } });
     } catch (e) {
       console.log(e.errors);

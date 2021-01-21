@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import QRCode from 'qrcode.react';
-import { API } from 'aws-amplify';
+import { API, Analytics } from 'aws-amplify';
 import { useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { getQuestion } from '../graphql/queries';
@@ -76,6 +76,7 @@ const Vote = () => {
           optionId: question.options.items[optionIndex].id
         }
       });
+      Analytics.record({ name: "vote" });
       if (result.data.vote) setQuestion(result.data.vote);
     } catch (e) {
       console.log(e);

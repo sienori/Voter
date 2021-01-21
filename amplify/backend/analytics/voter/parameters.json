@@ -1,0 +1,21 @@
+{
+    "appName": "voter",
+    "roleName": "pinpointLambdaRole3cb57eb5",
+    "cloudformationPolicyName": "cloudformationPolicy3cb57eb5",
+    "cloudWatchPolicyName": "cloudWatchPolicy3cb57eb5",
+    "pinpointPolicyName": "pinpointPolicy3cb57eb5",
+    "authPolicyName": "pinpoint_amplify_3cb57eb5",
+    "unauthPolicyName": "pinpoint_amplify_3cb57eb5",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
