@@ -50,8 +50,9 @@ const Vote = () => {
 
   useEffect(() => {
     const init = async () => {
-      const result = await API.graphql({ query: getQuestion, variables: { id: id } });
-      if (result.data.getQuestion) setQuestion(result.data.getQuestion);
+      const result = await API.graphql({ query: getQuestion, variables: { id: id } })
+        .catch(e => console.log(e));
+      if (result?.data?.getQuestion) setQuestion(result.data.getQuestion);
       else setExistsQuestion(false);
 
       const currentVotedIndex = Cookies.get(id);
@@ -89,8 +90,9 @@ const Vote = () => {
   };
 
   const handleReload = async () => {
-    const result = await API.graphql({ query: getQuestion, variables: { id: id } });
-    if (result.data.getQuestion) setQuestion(result.data.getQuestion);
+    const result = await API.graphql({ query: getQuestion, variables: { id: id } })
+      .catch(e => console.log(e));
+    if (result?.data?.getQuestion) setQuestion(result.data.getQuestion);
   };
 
   if (!existsQuestion) return (
