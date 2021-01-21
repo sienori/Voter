@@ -12,6 +12,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Button from '@material-ui/core/Button';
+import slugid from 'slugid';
 
 const MainCard = styled(Card)({
   padding: 10
@@ -47,7 +48,7 @@ const Post = () => {
       const result = await API.graphql({ query: postQuestion, variables: input });
       const id = result.data.postQuestion;
       setIsPosting(false);
-      history.push({ pathname: `/vote/${id}`, state: { isCreated: true } });
+      history.push({ pathname: `/vote/${slugid.encode(id)}`, state: { isCreated: true } });
     } catch (e) {
       console.log(e.errors);
       setIsPosting(false);

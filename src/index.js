@@ -81,7 +81,7 @@ ReactDOM.render(
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/post" component={Post} />
-          <Route exact path="/vote/:id" component={Vote} />
+          <Route exact path="/vote/:encodedId" component={Vote} />
           <Redirect to="/" />
         </Switch>
       </Main>

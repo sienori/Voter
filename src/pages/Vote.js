@@ -22,6 +22,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import Tooltip from '@material-ui/core/Tooltip';
 import VoteResult from './VoteResult';
 import ShareButtons from '../components/ShareButtons';
+import slugid from 'slugid';
 
 
 const MainCard = styled(Card)({
@@ -37,7 +38,8 @@ const initialQuestion = {
 };
 
 const Vote = () => {
-  const { id } = useParams();
+  const { encodedId } = useParams();
+  const [id] = useState(slugid.decode(encodedId));
   const [question, setQuestion] = useState(initialQuestion);
   const [votedIndex, setVotedIndex] = useState(null);
   const [selectedValue, setSelectedValue] = useState("0");
