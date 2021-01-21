@@ -23,19 +23,20 @@ const Buttons = styled(Box)({
   alignItems: "center",
   "& button": {
     display: "flex",
-    marginRight: "5px"
+    marginLeft: "12px",
   }
 });
 
 const Circle = styled(Box)({
-  height: "24px",
-  width: "24px",
+  height: "32px",
+  width: "32px",
   borderRadius: "50%",
   backgroundColor: grey["600"],
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  cursor: "pointer"
+  cursor: "pointer",
+  marginLeft: "12px",
 });
 
 const ShareButtons = props => {
@@ -43,21 +44,21 @@ const ShareButtons = props => {
   return (
     <Buttons>
       <TwitterShareButton url={url} title={description}>
-        <TwitterIcon size={24} round />
+        <TwitterIcon size={32} round />
       </TwitterShareButton>
       <FacebookShareButton url={url} quote={description}>
-        <FacebookIcon size={24} round />
+        <FacebookIcon size={32} round />
       </FacebookShareButton>
       <LineShareButton url={url} title={description}>
-        <LineIcon size={24} round />
+        <LineIcon size={32} round />
       </LineShareButton>
       <HatenaShareButton url={url}>
-        <HatenaIcon size={24} round />
+        <HatenaIcon size={32} round />
       </HatenaShareButton>
       <Tooltip title="URLをコピー">
         <CopyToClipboard text={url}>
           <Circle>
-            <LinkIcon fontSize="small" style={{ color: "#fff" }} />
+            <LinkIcon style={{ color: "#fff" }} />
           </Circle>
         </CopyToClipboard>
       </Tooltip>

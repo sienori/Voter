@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import QRCode from 'qrcode.react';
 import { API, Analytics } from 'aws-amplify';
 import { useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
@@ -109,24 +108,12 @@ const Vote = () => {
 
   return (
     <Box>
-      {isCreated && (
-        <Box mb={2}>
-          <MainCard>
-            <CardContent>
-              <Typography variant="h6">投票が作成されました！</Typography>
-              <Typography variant="body2">URLを友達にシェアしましょう。</Typography>
-              <Box m={3} textAlign="center">
-                <QRCode value={window.location.href} />
-              </Box>
-              <Box display="flex" justifyContent="center">
-                <ShareButtons
-                  url={window.location.href}
-                  description={`Voterで投票を作成しました！ - ${question.title}`} />
-              </Box>
-            </CardContent>
-          </MainCard>
+      {isCreated &&
+        <Box m={2}>
+          <Typography variant="h5">投票が作成されました！</Typography>
+          <Typography variant="body2">URLを友達にシェアしましょう。</Typography>
         </Box>
-      )}
+      }
       <MainCard>
         <CardContent>
           <Box mb={2}>
@@ -183,13 +170,11 @@ const Vote = () => {
           }
         </CardContent>
       </MainCard>
-      {!isCreated &&
-        <Box m={1}>
-          <ShareButtons
-            url={window.location.href}
-            description={`Voterで投票しました！ - ${question.title}`} />
-        </Box>
-      }
+      <Box m={2} display="flex" justifyContent="flex-end">
+        <ShareButtons
+          url={window.location.href}
+          description={`Voterで投票${isCreated ? "を作成" : ""}しました！ - ${question.title}`} />
+      </Box>
     </Box>
   );
 };;
