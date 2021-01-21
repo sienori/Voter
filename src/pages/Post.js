@@ -26,7 +26,7 @@ const Post = () => {
   const [isPosting, setIsPosting] = useState(false);
   const [shouldShowError, setShouldShowError] = useState(false);
   const history = useHistory();
-  document.title = "Voter | アンケートを作成";
+  document.title = "Voter | 投票を作成";
 
   const addOption = () => {
     const newOptions = [...options, ""];
