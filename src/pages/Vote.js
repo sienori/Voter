@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import QRCode from 'qrcode.react';
 import { API } from 'aws-amplify';
 import { useParams } from "react-router-dom";
@@ -21,8 +20,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ReplayIcon from '@material-ui/icons/Replay';
 import Tooltip from '@material-ui/core/Tooltip';
-import TextField from '@material-ui/core/TextField';
 import VoteResult from './VoteResult';
+import ShareButtons from '../components/ShareButtons';
 
 
 const MainCard = styled(Card)({
@@ -110,15 +109,14 @@ const Vote = () => {
           <MainCard>
             <CardContent>
               <Typography variant="h6">投票が作成されました！</Typography>
-              <Typography variant="body2">URLをお友達にシェアしましょう。</Typography>
+              <Typography variant="body2">URLを友達にシェアしましょう。</Typography>
               <Box m={3} textAlign="center">
                 <QRCode value={window.location.href} />
               </Box>
-              <Box display="flex" alignItems="center">
-                <TextField defaultValue={window.location.href} fullWidth margin="dense" variant="outlined" />
-                <CopyToClipboard text={window.location.href}>
-                  <Button style={{ flexShrink: 0 }}>URLをコピー</Button>
-                </CopyToClipboard>
+              <Box display="flex" justifyContent="center">
+                <ShareButtons
+                  url={window.location.href}
+                  description={`Voterで投票を作成しました！ - ${question.title}`} />
               </Box>
             </CardContent>
           </MainCard>
@@ -180,6 +178,13 @@ const Vote = () => {
           }
         </CardContent>
       </MainCard>
+      {!isCreated &&
+        <Box m={1}>
+          <ShareButtons
+            url={window.location.href}
+            description={`Voterで投票しました！ - ${question.title}`} />
+        </Box>
+      }
     </Box>
   );
 };;
