@@ -168,7 +168,7 @@ const Vote = () => {
                 </Box>)}
             </Box>
             : <Box>
-              <VoteResult question={question} votedIndex={votedIndex} />
+              <VoteResult question={question} votedIndex={parseInt(votedIndex)} />
               <Box display="flex" justifyContent="flex-end">
                 <Tooltip title="更新" arrow>
                   <IconButton onClick={handleReload} size="small">
